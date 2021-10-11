@@ -17,6 +17,7 @@ router.route('/:id').get((req, res) => {
 //CREATE 
 router.route('/add').post((req, res) => {
     const bugName = req.body.bugName;
+    const type = req.body.type;
     const reporter = req.body.reporter;
     const description = req.body.description;
     const status = req.body.assginee ? 'To Do' : 'Unassigned';
@@ -25,6 +26,7 @@ router.route('/add').post((req, res) => {
 
     const newBug = new Bug({
         bugName,
+        type,
         description,
         status,
         priority,
@@ -42,6 +44,7 @@ router.route('/update/:id').post((req, res) => {
     Bug.findByIdAndUpdate(req.params.id)
         .then(bug => {
             bug.bugName = req.body.bugName;
+            bug.type = req.body.type;
             bug.description = req.body.description;
             bug.status = req.body.status;
             bug.reporter = req.body.reporter;
