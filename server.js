@@ -19,9 +19,11 @@ connection.once('open', () => {
 });
 
 const userRouter = require('./routes/auth');
+const privateRouter = require('./routes/private');
 const bugRouter = require('./routes/bugs');
 
 app.use('/api/auth', userRouter);
+app.use('/api/private', privateRouter);
 app.use('/bugs', bugRouter);
 
 app.use(errorHandler);
