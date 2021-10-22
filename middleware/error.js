@@ -21,7 +21,6 @@ const errorHandler = (err, req, res, next) => {
         success: false,
         error: error.message || "Server Error"
     });
-
 }
 
-module.exports = ErrorResponse;
+module.exports = errorHandler;
