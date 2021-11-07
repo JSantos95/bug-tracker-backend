@@ -5,11 +5,24 @@ const Bug = require('../models/bug.model');
 router.route('/').get((req, res) => {
     Bug.find()
         .then(bug => res.json(bug))
-        .catch(err => res.status(400).json('Error: ' + err));
+        .catch(err => res.status(400).json('Error: lol ' + err));
 });
 
 router.route('/:id').get((req, res) => {
     Bug.findById(req.params.id)
+        .then(bug => res.json(bug))
+        .catch(err => res.status(400).json('Error: ' + err));
+})
+
+router.route('/user/:name').get((req, res) => {
+    const name = req.params.name;
+    console.log(name);
+    Bug.find({
+        $or: [
+            { "reporter": name },
+            { "assginee": name },
+            { "status": "Unassigned" },
+        ]})
         .then(bug => res.json(bug))
         .catch(err => res.status(400).json('Error: ' + err));
 })
