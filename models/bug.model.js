@@ -13,6 +13,7 @@ const bugSchema = new Schema({
     priority: { type: String, required: true, },
     reporter: { type: String, required: true, },
     assginee: { type: String, required: false, },
+    company: { type: String, required: false, },
 }, {
     timestamps: true,
 });

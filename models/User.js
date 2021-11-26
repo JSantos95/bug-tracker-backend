@@ -28,7 +28,7 @@ const userSchema = new Schema({
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
-    company: { type: String, required: false },
+    company: { type: Array, required: false },
 }, {
     timestamps: true,
 });
