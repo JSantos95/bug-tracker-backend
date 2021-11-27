@@ -1,18 +1,19 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import { User } from '../interface';
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const userSchema = new Schema<User>({
     username: {
         type: String,
         required: [true, "Please provide a username"],
         unique: true
     },
     email: {
-        type: String, 
+        type: String,
         required: [true, "Please provide a valid email address"],
         unique: true,
         match: [
@@ -21,9 +22,9 @@ const userSchema = new Schema({
         ]
     },
     password: {
-        type: String, 
+        type: String,
         required: [true, "Plesea provide a valid password"],
-        minlength: 6, 
+        minlength: 6,
         select: false,
     },
     resetPasswordToken: String,
@@ -33,8 +34,8 @@ const userSchema = new Schema({
     timestamps: true,
 });
 
-userSchema.pre("save", async function(next) {
-    if(!this.isModified("password")) {
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
         next();
     }
     const salt = await bcrypt.genSalt(10);
@@ -46,11 +47,11 @@ userSchema.methods.matchPassword = async function (password) {
     return await bcrypt.compare(password, this.password);
 }
 
-userSchema.methods.getSignedToken = function() {
-    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE})
+userSchema.methods.getSignedToken = function () {
+    return jwt.sign({ id: this._id }, (process.env.JWT_SECRET as string), { expiresIn: process.env.JWT_EXPIRE })
 }
 
-userSchema.methods.getResetPasswordToken = function() {
+userSchema.methods.getResetPasswordToken = function () {
     const resetToken = crypto.randomBytes(20).toString("hex");
     this.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
 
@@ -58,6 +59,6 @@ userSchema.methods.getResetPasswordToken = function() {
     return resetToken;
 }
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model<User>('User', userSchema);
 
 module.exports = User;

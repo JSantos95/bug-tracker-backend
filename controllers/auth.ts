@@ -1,19 +1,21 @@
+import { NextFunction, Request, Response } from "express";
+
 const User = require('../models/User');
 const ErrorResponse = require('../utils/errorResponse');
 
-exports.register =  async (req, res, next) => {
+export const register = async (req: Request, res: Response, next: NextFunction) => {
     const { username, email, password } = req.body;
     const newUser = new User({ username, email, password });
 
     newUser.save()
         .then(() => sendToken(newUser, 201, res))
-        .catch(err => next(err));
+        .catch((err: any) => next(err));
 }
 
-exports.login = async (req, res, next) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
 
-    if(!email || !password) {
+    if (!email || !password) {
         return next(new ErrorResponse("Please provide an email and password", 400));
     }
 
@@ -24,22 +26,22 @@ exports.login = async (req, res, next) => {
         }
 
         const isMatch = await user.matchPassword(password);
-        if(!isMatch){
+        if (!isMatch) {
             return next(new ErrorResponse("Invalid credentials", 401));
         }
-    
+
         sendToken(user, 201, res);
     } catch (err) {
         next(err);
     }
 }
 
-exports.forgotPassword = async (req, res, next) => { 
+export const forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
     const { email } = req.body;
 
     try {
         const user = await User.findOne({ email });
-        if(!user) {
+        if (!user) {
             return next(new ErrorResponse("Email could not be sent", 404));
         }
 
@@ -53,26 +55,26 @@ exports.forgotPassword = async (req, res, next) => {
             <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
         `;
         try {
-            
+
         } catch (err) {
 
         }
-    } catch(err) {
+    } catch (err) {
         next(err);
     }
 }
 
-exports.resetPassword = (req, res, next) => {
+export const resetPassword = (req: Request, res: Response, next: NextFunction) => {
     res.send("Reset Password Route");
 }
 
-exports.allUser = (req, res, next) => {
+export const allUser = (req: Request, res: Response, next: NextFunction) => {
     User.find()
-        .then(user => res.json(user))
-        .catch(err => res.status(400).json('Error ', err));
+        .then((user: any) => res.json(user))
+        .catch((err: any) => res.status(400).json('Error ' + err));
 }
 
-const sendToken = ( user, statusCode, res) => {
+const sendToken = (user: any, statusCode: number, res: Response) => {
     const token = user.getSignedToken();
-    res.status(statusCode).json({ success: true, token});
+    res.status(statusCode).json({ success: true, token });
 }
