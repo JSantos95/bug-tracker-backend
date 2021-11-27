@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
+import { Options } from '../interface';
 
-
-const sendEmail = (options) => {
+export const sendEmail = (options: Options) => {
     const transporter = nodemailer.createTransport({
         service: process.env.EMAIL_SERVICE,
         auth: ({
@@ -17,8 +17,8 @@ const sendEmail = (options) => {
         html: options.text
     };
 
-    transporter.sendMail(mailOptions, function (err, info) {
-        if(err) {
+    transporter.sendMail(mailOptions, function (err: any, info: any) {
+        if (err) {
             console.log(err);
         } else {
             console.log(info)

@@ -1,6 +1,6 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
 const errorHandler = require('./middleware/error');
 
 require('dotenv').config();
@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 const uri = process.env.ATLAS_URI;
-mongoose.connect(uri);
+mongoose.connect((uri as string));
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log("MongoDB database connection established successfully");

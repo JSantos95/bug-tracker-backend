@@ -2,16 +2,23 @@
   "name": "bug-tracker-backend",
   "version": "1.0.0",
   "description": "backend to bug-tracker",
-  "main": "server.js",
+  "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "start:dev": "nodemon server.js"
+    "start": "node server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only server.ts"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.13"
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.6",
+    "@types/node": "^16.11.10",
+    "nodemon": "^2.0.13",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.2"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
