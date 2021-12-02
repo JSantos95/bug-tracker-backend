@@ -74,6 +74,19 @@ export const allUser = (req: Request, res: Response, next: NextFunction) => {
         .catch((err: any) => res.status(400).json('Error ' + err));
 }
 
+export const update = (req: Request, res: Response, next: NextFunction) => {
+    User.findByIdAndUpdate(req.params.userID)
+        .then((user: any) => {
+            user.username = req.body.username;
+            user.email = req.body.email;
+            user.company = req.body.email;
+
+            user.save()
+                .then(() => res.json('User Updated!'))
+                .catch((err: any) => res.status(400).json('Error: ' + err));
+        })
+}
+
 const sendToken = (user: any, statusCode: number, res: Response) => {
     const token = user.getSignedToken();
     res.status(statusCode).json({ success: true, token });
