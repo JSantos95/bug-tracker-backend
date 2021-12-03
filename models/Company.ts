@@ -4,12 +4,19 @@ const Schema = mongoose.Schema;
 
 const companySchema = new Schema({
     companyName: {
-        type: String, 
+        type: String,
         required: true,
         unique: true,
         trim: true,
         minlength: 3,
     },
+    owner: {
+        type: String,
+        required: true,
+    },
+    members: {
+        type: Array
+    }
 }, {
     timestamps: true,
 });
