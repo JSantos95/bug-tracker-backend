@@ -77,9 +77,9 @@ export const allUser = (req: Request, res: Response, next: NextFunction) => {
 export const update = (req: Request, res: Response, next: NextFunction) => {
     User.findByIdAndUpdate(req.params.userID)
         .then((user: any) => {
-            user.username = req.body.username;
-            user.email = req.body.email;
-            user.company = req.body.email;
+            user.username = req.body.username ? req.body.username : user.username;
+            user.email = req.body.email ? req.body.email : user.email;
+            user.company = req.body.company ? req.body.company : user.company;
 
             user.save()
                 .then(() => res.json('User Updated!'))
