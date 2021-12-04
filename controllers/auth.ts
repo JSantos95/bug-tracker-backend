@@ -6,6 +6,7 @@ const ErrorResponse = require('../utils/errorResponse');
 export const register = async (req: Request, res: Response, next: NextFunction) => {
     const { username, email, password } = req.body;
     const newUser = new User({ username, email, password });
+    newUser.company = req.body.company ? req.body.company : "";
 
     newUser.save()
         .then(() => sendToken(newUser, 201, res))
