@@ -11,11 +11,8 @@ const companySchema = new Schema({
         minlength: 3,
     },
     owner: {
-        type: String,
+        type: Number,
         required: true,
-    },
-    members: {
-        type: Array
     }
 }, {
     timestamps: true,
