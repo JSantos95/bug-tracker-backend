@@ -9,6 +9,12 @@ export const find = (req: Request, res: Response) => {
         .catch((err: any) => res.status(400).json('Error: ' + err));
 }
 
+export const findCompanyById = (req: Request, res: Response) => {
+    Company.findById(req.params.id)
+        .then((user: any) => res.json(user))
+        .catch((err: any) => res.status(400).json('Error: ' + err));
+}
+
 //Create
 export const create = (req: Request, res: Response) => {
     const newCompany = new Company({
