@@ -1,10 +1,11 @@
 export interface User {
+    _id: string,
     username: string,
     email: string,
     password: string,
     resetPasswordToken?: string,
     resetPasswordExpire?: Date,
-    company?: Array<string>
+    companyId?: string
 }
 
 export interface Bug {
@@ -12,8 +13,8 @@ export interface Bug {
     type: string
     description: string;
     status: string;
-    reporter: string;
-    assignee: string;
+    reporterId: string;
+    assigneeId: string;
     priority: string;
     save: Function;
 }
