@@ -23,10 +23,10 @@ const privateRouter = require('./routes/private');
 const bugRouter = require('./routes/bugs');
 const companyRouter = require('./routes/company');
 
-app.use('/api/auth', userRouter);
-app.use('/api/private', privateRouter);
-app.use('/bugs', bugRouter);
-app.use('/company', companyRouter);
+app.use('/api/User', userRouter);
+app.use('/api/Private', privateRouter);
+app.use('/api/Bug', bugRouter);
+app.use('/api/Company', companyRouter);
 
 app.use(errorHandler);
 
