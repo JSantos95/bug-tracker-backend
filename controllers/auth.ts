@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { User as UserSchema } from '../interface';
 
 const User = require('../models/User');
 const ErrorResponse = require('../utils/errorResponse');
@@ -14,14 +16,14 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 }
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    if (!email || !password) {
+    if (!username || !password) {
         return next(new ErrorResponse("Please provide an email and password", 400));
     }
 
     try {
-        const user = await User.findOne({ email }).select("+password");
+        const user = await User.findOne({ username }).select("+password");
         if (!user) {
             return next(new ErrorResponse("Invalid credentials", 401));
         }
@@ -71,6 +73,35 @@ export const resetPassword = (req: Request, res: Response, next: NextFunction) =
 
 export const allUser = (req: Request, res: Response, next: NextFunction) => {
     User.find()
+        .then((user: any) => res.json(user))
+        .catch((err: any) => res.status(400).json('Error ' + err));
+}
+
+export const getUserById = (req: Request, res: Response, next: NextFunction) => {
+    User.findById(req.params.id)
+        .then((user: any) => res.json(user))
+        .catch((err: any) => res.status(400).json('Error ' + err));
+}
+
+export const getAllCoworkersByToken = (req: Request, res: Response, next: NextFunction) => {
+    const token = req.params.token;
+    const payload = jwt.decode(token) as JwtPayload;
+    User.findById(payload.id)
+        .then((user: UserSchema) =>
+            User.find({ companyId: user.companyId })
+                .then((users: UserSchema[]) => res.json(users))
+                .catch((err: any) => res.status(400).json('Error ' + err))
+        )
+        .catch((err: any) => res.status(400).json('Error ' + err))
+
+
+}
+
+export const getUserByToken = (req: Request, res: Response, next: NextFunction) => {
+    const token = req.params.token;
+    const payload = jwt.decode(token) as JwtPayload;
+
+    User.findById(payload.id)
         .then((user: any) => res.json(user))
         .catch((err: any) => res.status(400).json('Error ' + err));
 }
