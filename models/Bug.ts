@@ -11,9 +11,8 @@ const bugSchema = new Schema({
     status: { type: String, required: true, },
     //priority: low - med - high
     priority: { type: String, required: true, },
-    reporter: { type: String, required: true, },
-    assginee: { type: String, required: false, },
-    company: { type: String, required: false, },
+    reporterId: { type: String, required: true, },
+    assigneeId: { type: String, required: false, },
 }, {
     timestamps: true,
 });
