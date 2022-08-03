@@ -5,7 +5,8 @@ export interface User {
     password: string,
     resetPasswordToken?: string,
     resetPasswordExpire?: Date,
-    companyId?: string
+    companyId?: string,
+    save: Function,
 }
 
 export interface Bug {
@@ -17,6 +18,13 @@ export interface Bug {
     assigneeId: string;
     priority: string;
     save: Function;
+}
+
+export interface Company {
+    _id: string,
+    companyName: string,
+    ownerId: string,
+    save: Function
 }
 
 export interface Options {
