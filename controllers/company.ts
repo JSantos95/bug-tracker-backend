@@ -1,17 +1,18 @@
 import { Request, Response } from "express";
+import { Company as CompanySchema } from '../interface';
 
 const Company = require('../models/Company');
 
 //Read
-export const find = (req: Request, res: Response) => {
+export const getAllCompanies = (req: Request, res: Response) => {
     Company.find()
-        .then((user: any) => res.json(user))
+        .then((company: CompanySchema[]) => res.json(company))
         .catch((err: any) => res.status(400).json('Error: ' + err));
 }
 
 export const findCompanyById = (req: Request, res: Response) => {
     Company.findById(req.params.id)
-        .then((user: any) => res.json(user))
+        .then((company: CompanySchema) => res.json(company))
         .catch((err: any) => res.status(400).json('Error: ' + err));
 }
 
@@ -19,8 +20,7 @@ export const findCompanyById = (req: Request, res: Response) => {
 export const create = (req: Request, res: Response) => {
     const newCompany = new Company({
         companyName: req.body.companyName,
-        owner: req.body.username,
-        members: [req.body.username],
+        ownerId: req.body.id
     });
 
     newCompany.save()
@@ -29,10 +29,11 @@ export const create = (req: Request, res: Response) => {
 };
 
 //Update
-export const join = (req: Request, res: Response) => {
+export const update = (req: Request, res: Response) => {
     Company.findByIdAndUpdate(req.params.id)
-        .then((company: any) => {
-            company.members = [...company.members, req.body.username];
+        .then((company: CompanySchema) => {
+            company.companyName = req.body.companyName;
+            company.ownerId = req.body.ownerId;
 
             company.save()
                 .then(() => res.json('Company Updated!'))
