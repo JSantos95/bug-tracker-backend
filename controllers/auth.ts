@@ -73,13 +73,13 @@ export const resetPassword = (req: Request, res: Response, next: NextFunction) =
 
 export const allUser = (req: Request, res: Response, next: NextFunction) => {
     User.find()
-        .then((user: any) => res.json(user))
+        .then((user: UserSchema[]) => res.json(user))
         .catch((err: any) => res.status(400).json('Error ' + err));
 }
 
 export const getUserById = (req: Request, res: Response, next: NextFunction) => {
     User.findById(req.params.id)
-        .then((user: any) => res.json(user))
+        .then((user: UserSchema) => res.json(user))
         .catch((err: any) => res.status(400).json('Error ' + err));
 }
 
@@ -102,16 +102,16 @@ export const getUserByToken = (req: Request, res: Response, next: NextFunction) 
     const payload = jwt.decode(token) as JwtPayload;
 
     User.findById(payload.id)
-        .then((user: any) => res.json(user))
+        .then((user: UserSchema) => res.json(user))
         .catch((err: any) => res.status(400).json('Error ' + err));
 }
 
 export const update = (req: Request, res: Response, next: NextFunction) => {
     User.findByIdAndUpdate(req.params.userID)
-        .then((user: any) => {
+        .then((user: UserSchema) => {
             user.username = req.body.username ? req.body.username : user.username;
             user.email = req.body.email ? req.body.email : user.email;
-            user.company = req.body.company ? req.body.company : user.company;
+            user.companyId = req.body.companyId ? req.body.companyId : user.companyId;
 
             user.save()
                 .then(() => res.json('User Updated!'))
