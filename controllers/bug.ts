@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Bug as BugType, User as UserType } from '../interface';
+import { Bug as BugType } from '../interface';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const Bug = require('../models/Bug');
@@ -39,7 +39,7 @@ export const getAllBugByToken = (req: Request, res: Response) => {
             { assigneeId: id }
         ]
     })
-        .then((bug: any) => res.json(bug))
+        .then((bug: BugType) => res.json(bug))
         .catch((err: any) => res.status(400).json('Error: ' + err))
 };
 
