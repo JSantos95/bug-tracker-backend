@@ -1,8 +1,9 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import { Company as CompanySchema } from '../interface';
 
 const Schema = mongoose.Schema;
 
-const companySchema = new Schema({
+const companySchema = new Schema<CompanySchema>({
     companyName: {
         type: String,
         required: true,
@@ -10,8 +11,8 @@ const companySchema = new Schema({
         trim: true,
         minlength: 3,
     },
-    owner: {
-        type: Number,
+    ownerId: {
+        type: String,
         required: true,
     }
 }, {
