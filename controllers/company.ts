@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
-import { Company as CompanySchema } from '../interface';
+import { Company as CompanySchema, User as UserSchema } from '../interface';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const Company = require('../models/Company');
+const User = require('../models/User');
 
 //Read
 export const getAllCompanies = (req: Request, res: Response) => {
@@ -14,6 +16,18 @@ export const findCompanyById = (req: Request, res: Response) => {
     Company.findById(req.params.id)
         .then((company: CompanySchema) => res.json(company))
         .catch((err: any) => res.status(400).json('Error: ' + err));
+}
+
+export const findCompanyByToken = (req: Request, res: Response) => {
+    const token = req.params.token;
+    const payload = jwt.decode(token) as JwtPayload;
+    User.findById(payload.id)
+        .then((user: UserSchema) => {
+            Company.findById(user.companyId)
+                .then((company: CompanySchema) => res.json(company))
+                .catch((err: any) => res.status(400).json('Error finding company with id ' + err));
+        })
+        .catch((err: any) => res.status(400).json('Error decoding token: ' + err));
 }
 
 //Create
